@@ -1,0 +1,84 @@
+<html>
+  <head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet">
+    <style type="text/css">
+      #network {
+        width:  800px;
+        height: 800px;
+        border: 1px solid #000;
+      }
+    </style>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+  </head>
+  <body>
+    <div id="network"></div>
+    <script type="text/javascript">
+    var options = {
+      physics: true, // 物理シミュレーションをオフにする
+      nodes: {
+            shape: 'box', // ノードの形をellipseからboxに
+            size: 20, //　ノードの大きさ
+            font: {
+              boldital: { color: 'pink' }, // <i><b>aaa</b></i>タグのカラー
+              ital: { color: 'orange' },  // <i>aaa</i>タグのカラー
+              mono: { color: 'blue' }, // <code>aaa</code>タグのカラー
+              bold: { color: 'purple' }, // <b>aaa</b>タグのカラー
+              color: 'yellow', // タグなしのノードの文字の色
+            },
+            color: "skyblue" // ノードカラー
+      },
+      edges: {
+            arrows: '', // エッジに矢印を付けて有向グラフにする
+            smooth: false // falseにするとエッジが直線になる
+      },
+};
+    const nodes = new vis.DataSet([
+        {id: 1, label: '数学', shape: 'box',group: 1,mass: 1, value: 20, scaling: { label: { enabled: true} },
+        link:"https://en.wikipedia.org/wiki/Main_conjecture_of_Iwasawa_theory"},
+        {id: 2, label: '解析', group: 1,link:"https://en.wikipedia.org/wiki/Riemann_hypothesis"},
+        {id: 3, label: '統計', group: 1},
+        {id: 4, label: '線形', group: 1},
+        {id: 5, label: '単位',shape: 'box',group: 2, mass: 1, value: 20, scaling: { label: { enabled: true} }},
+        {id: 6, label: '留年', group: 2},
+        {id: 7, label: 'GPA', group: 2},
+        {id: 8, label: '成績', group: 2},
+        {id: 9, label: '飲酒', shape: 'box',group: 3,mass: 1, value: 20, scaling: { label: { enabled: true} }},
+        {id: 10, label: 'スト缶', group: 3},
+        {id: 11, label: '麻雀', group: 3},
+        {id: 12, label: '煙草', group: 3},
+
+      ]);
+      var edges = new vis.DataSet([
+        {from: 1, to: 2, arrows: 'to',width: 3, length: 1},
+        {from: 1, to: 3, arrows: 'to', width: 3,length: 1},
+        {from: 1, to: 4, arrows: 'to', width: 3,length: 1},
+        {from: 1, to: 6, arrows: 'to', width: 5,length: 300},
+        {from: 10, to: 1, arrows: 'to', width: 5,length: 300},
+        {from: 7, to: 12, arrows: 'to', width: 5,length: 300},
+        {from: 5, to: 6, arrows: 'to',width: 3,length: 1},
+        {from: 5, to: 7, arrows: 'to',width: 3,length: 1},
+        {from: 5, to: 8, arrows: 'to',width: 3,length: 1},
+        {from: 9, to: 10, arrows: 'to',width: 3,length: 1},
+        {from: 9, to: 11, arrows: 'to',width: 3,length: 1},
+        {from: 9, to: 12, arrows: 'to',width: 3,length: 1},
+      ]);
+      var container = document.getElementById('network');
+      var data = {
+        nodes: nodes,
+        edges: edges
+      };
+      var options = {
+      };
+      var network = new vis.Network(container, data, options);
+      var windowObjectReference;
+      var windowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes";
+      network.on("click", function(params) {
+        if (params.nodes.length == 1) {
+          var nodeId = params.nodes[0];
+          var node = nodes.get(nodeId);
+          window.open(("https://ja.wikipedia.org/wiki/"+node.label), node.label, windowFeatures);
+        }
+      });
+    </script>
+  </body>
+</html>
